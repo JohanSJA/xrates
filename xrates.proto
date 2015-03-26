@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package xrates;
+
+service XRates {
+  rpc Get(Currency) returns (Rate) {}
+  rpc All(Currencies) returns (Rates) {}
+}
+
+message Currency {
+  string currency = 1;
+}
+
+message Rate {
+  double rate = 1;
+}
+
+message Currencies {
+  repeated string currencies = 1;
+}
+
+message Rates {
+  map<string, double> rates = 1;
+}
