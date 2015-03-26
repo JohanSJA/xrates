@@ -34,7 +34,7 @@ func main() {
 	}
 
 	log.Println("Getting multiple currencies")
-	rates, err := client.All(context.Background(), &xrates.Currencies{[]string{""}})
+	rates, err := client.All(context.Background(), &xrates.Currencies{[]string{}})
 	if err != nil {
 		log.Printf("Couldn't get currency. %v\n", err)
 	} else {

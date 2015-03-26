@@ -56,6 +56,7 @@ func (s *Server) All(ctx context.Context, cur *xrates.Currencies) (*xrates.Rates
 }
 
 func (s *Server) populate() error {
+	log.Println("Querying OpenExchange")
 	res, err := http.Get(s.url)
 	if err != nil {
 		return err
@@ -75,6 +76,7 @@ func (s *Server) populate() error {
 	s.timestamp = time.Unix(r.Timestamp, 0)
 	s.rates = r.Rates
 
+	log.Println("Result cached.")
 	return nil
 }
 
@@ -83,9 +85,11 @@ func (s *Server) update() error {
 	dur := now.Sub(s.timestamp)
 
 	if dur.Hours() < 1 {
+		log.Println("No update needed.")
 		return nil
 	}
 
+	log.Println("Upate needed.")
 	return s.populate()
 }
 
