@@ -10,7 +10,8 @@ import (
 	"net"
 	"net/http"
 	"time"
-	"zumata/xrates"
+
+	"github.com/JohanSJA/xrates"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
