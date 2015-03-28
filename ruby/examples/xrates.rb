@@ -13,8 +13,14 @@ def main
   stub = XRates::Stub.new('localhost:50800')
 
   puts "Getting one currency"
-  rate = stub.get(Currency.new(currency: 'MYR'))
-  puts "Rate for MYR: #{rate.rate}"
+  ['MYR', 'UNK'].each do |c|
+    begin
+      rate = stub.get(Currency.new(currency: c))
+      puts "Rate for MYR: #{rate.rate}"
+    rescue GRPC::BadStatus => b
+      puts "Couldn't get currency. #{b}"
+    end
+  end
 
   puts "Getting multiple currencies"
   rates = stub.all(Currencies.new(currencies: []))

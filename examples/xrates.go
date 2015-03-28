@@ -26,11 +26,13 @@ func main() {
 	client := xrates.NewXRatesClient(conn)
 
 	log.Println("Getting one currency")
-	rate, err := client.Get(context.Background(), &xrates.Currency{"MYR"})
-	if err != nil {
-		log.Printf("Couldn't get currency. %v\n", err)
-	} else {
-		log.Printf("Rate for MYR: %f\n", rate.Rate)
+	for _, c := range []string{"MYR", "UNK"} {
+		rate, err := client.Get(context.Background(), &xrates.Currency{c})
+		if err != nil {
+			log.Printf("Couldn't get currency. %v\n", err)
+		} else {
+			log.Printf("Rate for MYR: %f\n", rate.Rate)
+		}
 	}
 
 	log.Println("Getting multiple currencies")

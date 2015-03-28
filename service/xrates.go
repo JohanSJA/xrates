@@ -29,7 +29,7 @@ type Server struct {
 func NewServer(appID string) *Server {
 	s := &Server{url: BaseURL + "?app_id=" + appID}
 	if err := s.populate(); err != nil {
-		log.Fatal("Error in creating server. %v", err)
+		log.Fatalf("Error in creating server. %v", err)
 	}
 	return s
 }
@@ -61,6 +61,9 @@ func (s *Server) populate() error {
 	if err != nil {
 		return err
 	}
+	if res.StatusCode != http.StatusOK {
+		return errors.New("Error returned from OpenExchange server.")
+	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -84,13 +87,12 @@ func (s *Server) update() error {
 	now := time.Now()
 	dur := now.Sub(s.timestamp)
 
-	if dur.Hours() < 1 {
-		log.Println("No update needed.")
-		return nil
+	if dur.Hours() > 1 {
+		log.Println("Upate needed.")
+		return s.populate()
 	}
 
-	log.Println("Upate needed.")
-	return s.populate()
+	return nil
 }
 
 type result struct {
